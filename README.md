@@ -3,7 +3,8 @@ my k8s notes
 
 > 这是我学习kubernetes的一点笔记与心得
 
-##目录简介
+## 目录简介
+```
 ikubernetes/
 ├── README.md
 ├── sys-kubernetes    #搭建环境用到的一些资源文件
@@ -21,3 +22,4 @@ ikubernetes/
     ├── service       #service资源
     ├── statefulset   #有状态应用控制器
     └── volume        #存储
+```
