@@ -24,9 +24,40 @@ ikubernetes/
     └── volume        #存储
 ```
 ## kubernetes集群搭建
+```
 使用工具:kubeadm
 系统:CentOS 7 * 3
     192.168.179.50  k8s-master
     192.168.179.51  k8s-node1
     192.168.179.52  k8s-node2
 容器引擎:Docker 18.09
+集群版本:kubernetes 1.13.3
+```
+> 注:master的CPU至少2核,实验前请关闭防火墙和selinux
+### Master
+```
+1.安装docker
+~]# wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -P /etc/yum.repos.d/  #可选择对应版本rpm包直接安装
+#选择docker版本:
+~]# yum list docker-ce --showduplicates
+~]# yum install -y --setopt=obsoletes=0 docker-ce-18.06.1.ce-3.el7
+
+2.集群安装
+
+~]# cat /etc/yum.repos.d/kubernetes.repo 
+	[kubernetes]
+	name=kubernetes repo
+	baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+	gpgcheck=1
+	gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+		   https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+	enabled=1
+
+~]# yum install kubelet kubeadm kubectl -y
+~]# systemctl start docker  #不能先启动kubelet，否则会报错
+~]# systemctl enable kubelet docker
+
+禁用swap分区，Kubernetes 1.8开始要求必须禁用Swap，如果不关闭，默认配置下kubelet将无法启动。
+
+
+```
