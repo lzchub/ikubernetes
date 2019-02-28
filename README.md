@@ -23,3 +23,10 @@ ikubernetes/
     ├── statefulset   #有状态应用控制器
     └── volume        #存储
 ```
+## kubernetes集群搭建
+使用工具:kubeadm
+系统:CentOS 7 * 3
+    192.168.179.50  k8s-master
+    192.168.179.51  k8s-node1
+    192.168.179.52  k8s-node2
+容器引擎:Docker 18.09
