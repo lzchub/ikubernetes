@@ -33,13 +33,13 @@ ikubernetes/
 容器引擎:Docker 18.09
 集群版本:kubernetes 1.13.3
 ```
-> 注:master的CPU至少2核,实验前请关闭防火墙和selinux
-### Master
-
+> 注:master的CPU至少2核,实验前请关闭所有节点防火墙和selinux
+## 1.集群搭建
+### 1.1 Master
 ```
-1.安装docker
+1. 安装docker
 ~]# wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -P /etc/yum.repos.d/  #可选择对应版本rpm包直接安装
-#选择docker版本:
+选择docker版本:
 ~]# yum list docker-ce --showduplicates
 ~]# yum install -y --setopt=obsoletes=0 docker-ce-18.06.1.ce-3.el7
 镜像加速:由于国内拉取dockerhub上的镜像速度较慢或会拉取失败,使用国内镜像加速访问
@@ -48,7 +48,7 @@ ikubernetes/
 	"registry-mirrors":["https://registry.docker-cn.com"]
 }
 
-2.集群安装
+2. 集群搭建
 2.1 基础准备
 ~]# cat /etc/yum.repos.d/kubernetes.repo 
 	[kubernetes]
@@ -84,7 +84,7 @@ KUBELET_EXTRA_ARGS="--fail-swap-on=false"
 		--pod-network-cidr=10.244.0.0/16 \    #pod的网络地址，使用flannel插件时，默认是10.244.0.0/16
 		--service-cidr=10.96.0.0/12 \	      #service的网络地址，默认地址为10.96.0.0/12
 		--image-repository registry.aliyuncs.com/google_containers \	#默认仓库的gcr.io，国内无法访问，显示定义仓库地址
-		#--ignore-preflight-errors=Swap	\     #忽略 swap分区未关闭的错误
+		#--ignore-preflight-errors=Swap	\     #忽略 swap分区未关闭的错误,若使用法二需要添加此项
 		#apiserver-advertise-address=192.168.179.50	#apiserver通告给其他组件的IP地址，一般为该节点的地址，0.0.0.0表示节点上所有的可用地址
 		...
 		[addons] Applied essential addon: CoreDNS
@@ -109,7 +109,29 @@ KUBELET_EXTRA_ARGS="--fail-swap-on=false"
 ~]# cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 
 2.4 部署pod网络插件flannel
-~]# wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml		#一键部署flannel的资源清单，由于我访问不了quay.io站点，修改镜像拉取地址（若需要其他版本，可到[阿里云](https://cr.console.aliyun.com/)或其他可访问到的仓库查找）
-
-
+~]# wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml		#一键部署flannel的资源清单，由于我访问不了quay.io站点，修改镜像拉取地址（具体可看我的清单,阿里云仓库(https://cr.console.aliyun.com/)或其他可访问到的仓库查找）
+~]# kubectl apply -f kube-flannel.yml
+~]# kubectl get nodes
+...
+k8s-master   Ready    master   2d6h   v1.13.3
 ```
+### 1.2 Node
+```
+1.安装docker(同master)
+2.加入集群
+2.1 基础准备(参考master 2.1)
+2.2 禁用swap(参考master 2.2)
+2.3 加入集群
+~]# kubeadm join 192.168.179.50:6443 --token z95afq.1lolsqdcy2gi4py2 --discovery-token-ca-cert-hash sha256:2c4a029e1816adf4ac438a9fb02e97d134f59f9c4c9b1457f639744f59cd7ff7
+
+其他node配置相同
+```
+```
+注:
+kubeadm：是Kubernetes官方提供的用于快速安装Kubernetes集群的工具，伴随Kubernetes每个版本的发布都会同步更新，kubeadm会对集群配置方面的一些实践做调整，通过实验kubeadm可以学习到Kubernetes官方在集群配置上一些新的最佳实践。
+kubelet：是运行于集群中每个节点上的kubernetesdialing程序，它的核心功能在于通过API Server获取调度至自身运行的Pod资源的PodSpec并依之运行Pod。事实上，以自托管方式部署的Kubernetes集群，除了kubelet和Docker之外的所有组件均以Pod对象的形式运行。
+kubectl: 操作集群的命令行工具。通过 kubectl 可以部署和管理应用，查看各种资源，创建、删除和更新各种组件。
+```
+
+
+
