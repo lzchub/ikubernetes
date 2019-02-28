@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-test
+  namespace: default
+  labels:
+    app: myapp
+    tier: frontend
+  annotations:
+    chuan/create-by: "cluster admin"
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+    ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP
+     #hostPort: 80
+     #hostIP: 0.0.0.0
+    - name: https
+      containerPort: 443
+  - name: busybox
+    image: busybox:latest
+    imagePullPolicy: IfNotPresent
+    #command: ["/bin/sh","-c","sleep 3600"]
+    command:
+    - "/bin/sh"
+    - "-c"
+    - "sleep 360"
+  #nodeSelector:
+   #disktype: ssd

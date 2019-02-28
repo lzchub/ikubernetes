@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-fqdn
+spec:
+  rules:
+  - hosts: www.chuan.com
+    http:
+      paths:
+      - backend:
+        serviceName: www-service
+        servicePort: 80
+  - hosts: web.chuan.com
+    http:
+      paths:
+      - backend:
+        serviceName: web-service
+        servicePort: 80

@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRolebinding
+metadata:
+  name: reources-reader
+subjects:
+- kind: User
+  name: kube-user2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: nodes-reader
+  apiGroup: rbac.authorization.k8s.io

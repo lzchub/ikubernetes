@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv001
+  labels:
+    num: pv001
+spec:
+  nfs:
+    path: /data/nfs/volume1
+    server: master.chuan.com
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 3Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv002
+  labels:
+    num: pv002
+spec:
+  nfs:
+    path: /data/nfs/volume2
+    server: master.chuan.com
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 6Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv003
+  labels:
+    num: pv003
+spec:
+  nfs:
+    path: /data/nfs/volume3
+    server: master.chuan.com
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 9Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv004
+  labels:
+    num: pv004
+spec:
+  nfs:
+    path: /data/nfs/volume4
+    server: master.chuan.com
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 9Gi
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv005
+  labels:
+    num: pv005
+spec:
+  nfs:
+    path: /data/nfs/volume5
+    server: master.chuan.com
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 9Gi
