@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: expose-port-pod
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+    ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP 
+     
+      #1.nat,host 80 to container 80 
+      #hostPort: 80
+  
+  #2.gong xiang host port  
+  #hostNetwork: true

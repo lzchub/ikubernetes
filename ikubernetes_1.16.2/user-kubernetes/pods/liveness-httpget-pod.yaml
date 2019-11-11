@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-httpget-pod
+  labels: 
+    check: httpget
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12-alpine
+    ports:
+    - name: http
+      containerPort: 80
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/sh","-c","echo healthy > /usr/share/nginx/html/health.html"]
+    livenessProbe:
+      # container run how much time begin to check
+      initialDelaySeconds: 15
+
+      periodSeconds: 15
+      # check timeout
+      timeoutSeconds: 2
+      successTHreshold 2
+      failureThreshold 2
+      httpGet:
+        path: /health.html
+        port: http
+        scheme: HTTP    
+
+     

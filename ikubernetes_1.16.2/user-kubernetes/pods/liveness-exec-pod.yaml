@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-exec-pod
+  labels:
+    check: exec
+spec:
+  containers:
+  - name: busybox
+    image: busybox:latest
+    command: ["/bin/sh","-c","/tmp/healthy;sleep 20;rm -f /tmp/healthy;sleep 600"]
+    livenessProbe:
+      exec:
+        command: ["test","-e","/tmp/healthy"]
