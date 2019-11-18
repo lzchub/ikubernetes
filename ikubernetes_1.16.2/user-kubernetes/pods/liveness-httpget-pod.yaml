@@ -22,8 +22,8 @@ spec:
       periodSeconds: 15
       # check timeout
       timeoutSeconds: 2
-      successTHreshold 2
-      failureThreshold 2
+      successTHreshold: 2
+      failureThreshold: 2
       httpGet:
         path: /health.html
         port: http

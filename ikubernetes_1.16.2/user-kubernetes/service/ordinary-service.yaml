@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordinary-service
+spec:
+  selector:
+    app: ordinary
+  ports:
+  - name: http    #can't use daxie
+    protocol: TCP
+    port: 30080
+    targetPort: 80   # upstream pod port
+  - name: https    #can't use daxie
+    protocol: TCP
+    port: 30443
+    targetPort: 443   # upstream pod port
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordinary-deployment
+spec:
+  selector: 
+    matchLabels:
+      app: ordinary
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ordinary
+    spec:
+      containers:
+      - name: myapp
+        image: ikubernetes/myapp:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
