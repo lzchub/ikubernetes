@@ -1,0 +1,81 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: url-ingress
+spec:
+  rules:  
+  - host: www.k8s.io
+    http: 
+      paths:
+      - path: /wap-ingress
+        backend:
+          serviceName: wap-ingress-service
+          servicePort: 80
+      - path: /api-ingress
+        backend:
+          serviceName: api-ingress-service
+          servicePort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wap-ingress-service
+spec:
+  selector:
+    app: wap-ingress
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-ingress-service
+spec:
+  selector:
+    app: api-ingress
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: url-ingress-swp-deployment
+spec:
+  selector:
+    matchLabels:
+      app: wap-ingress
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: wap-ingress
+    spec:
+      containers:
+      - name: myapp
+        image: ikubernetes/myapp:v1
+
+---        
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: url-ingress-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: api-ingress
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: api-ingress
+    spec:
+      containers:
+      - name: myapp
+        image: ikubernetes/myapp:v1
