@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf-configmap
+  namespace: default
+data:
+  myserver.conf: |
+    server {
+
+        listen 8888;
+        server_name web.ik8s.io;
+
+        location / {
+                root /usr/share/nginx/html;
+        }
+
+        include /etc/nginx/conf.d/myserver-*.cfg;
+    }
+
+  myserver-gizp.cfg: |
+    gzip on;
+    gzip_comp_level 5;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types text/plain text/css application/xml text/javascript;
+
+  myserver-status.cfg: |
+    location /status {
+
+        stub_status on;
+        access_log off;
+    }
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-conf-configmap-pod
+  namespace: default
+  labels:
+    app: nginx-conf-configmap
+spec:
+  volumes:
+  - name: ngxconf
+    configMap:
+      name: nginx-conf-configmap
+  containers:
+  - name: nginx-server
+    image: nginx:alpine
+    volumeMounts:
+    - name: ngxconf
+      mountPath: /etc/nginx/conf.d/
+      readOnly: true
