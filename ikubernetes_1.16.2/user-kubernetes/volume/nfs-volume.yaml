@@ -3,20 +3,20 @@ kind: Pod
 metadata:
   name: nfs-volume-pod
   labels:
-    app: redis
+    app: nfs-volume
 spec:
   nodeName: node1.k8s.io
   containers:
   - name: redis
     image: redis:alpine
     ports:
-    - containerPort: 6379
-      name: redisport
+    - name: redisport
+      containerPort: 6379
     volumeMounts:
-    - mountPath: /data
-      name: redisdata
+    - name: redisdata
+      mountPath: /data
   volumes:
     - name: redisdata
       nfs:
-        server: nfs.ikubernetes.io
-        path: /data/redis
+        server: nfs.k8s.io
+        path: /data/v1
