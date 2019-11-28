@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envfrom-busybox-configmap
+  namespace: default
+data:
+  httpd_port: "8080"
+  verbose_level: "-vv"
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: envfrom-configmap-pod
+  namespace: default
+  labels:
+    app: envfrom-configmap
+spec:
+  containers:
+  - image: busybox
+    name: busybox-httpd
+    command: ["/bin/httpd"]
+    args: ["-f","-p","$(HTCFG_httpd_port)","$(HTCFG_verbose_level)"]
+    envFrom:
+    - prefix: HTCFG_
+      configMapRef:
+        name: envfrom-busybox-configmap
+        optional: false

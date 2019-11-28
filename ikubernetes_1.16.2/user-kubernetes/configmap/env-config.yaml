@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-config-pod
+  labels: 
+    app: env-config
+spec:
+  containers:
+  - name: myapp
+    image: busybox
+    command: ["httpd"]
+    args: ["-f","-p","$(PORT)","$(VERBOSE)"]
+
+    env:
+    - name: PORT
+      value: "8080"
+    - name: VERBOSE
+      value: "-vv"
+    - name: NODE_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+  restartPolicy: OnFailure
