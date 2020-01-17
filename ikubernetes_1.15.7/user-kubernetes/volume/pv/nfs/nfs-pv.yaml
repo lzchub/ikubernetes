@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-01
+  labels:
+    release: nfs-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+  nfs:
+    path: "/data/v2"
+    server: nfs.k8s.io
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-02
+  labels:
+    release: nfs-pv
+spec:
+  capacity:
+    storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+  nfs:
+    path: "/data/v3"
+    server: nfs.k8s.io
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-03
+  labels:
+    release: nfs-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow
+  mountOptions:
+    - hard
+  nfs:
+    path: "/data/v4"
+    server: nfs.k8s.io

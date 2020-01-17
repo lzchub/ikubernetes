@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-pro-ns-ingress
+  namespace: dev
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          env: pro
+  policyTypes:
+  - Ingress

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: initcontainer-pod
+  labels:
+    init: bbox
+spec:
+  # if restartPolicy is Never,when init container run error,init container will not restart
+  #restartPolicy: Never
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+  initContainers:
+  - name: init-container
+    image: busybox
+    command: ['/bin/sh','-c','sleep 10']

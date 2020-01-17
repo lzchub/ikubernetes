@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: define-cmd-pod
+spec:
+  containers:
+  - name: alpine
+    image: alpine:latest
+    
+    #command will cover contaienr default CMD, args is command parameter, if no args, command have null parameter
+    command: ["/bin/sh"]
+    args: ["-c","while true; do sleep 30; done"]
