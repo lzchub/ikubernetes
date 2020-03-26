@@ -9,9 +9,11 @@ spec:
   ports:
     - port: 80
       name: http
-      nodePort: 30080
+      #nodePort: 30080
+      nodePort: 80
     - port: 443
       name: https
-      nodePort: 30443
+      nodePort: 443
+      #nodePort: 30443
   selector:
     app.kubernetes.io/name: ingress-nginx

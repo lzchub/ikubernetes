@@ -15,6 +15,11 @@ data:
       - targets:
         - localhost:9090
 
+    - job_name: node-exporter
+      static_configs:
+      - targets:
+        - 192.168.5.35:9100
+
     - job_name: kubernetes-apiservers
       kubernetes_sd_configs:
       - role: endpoints

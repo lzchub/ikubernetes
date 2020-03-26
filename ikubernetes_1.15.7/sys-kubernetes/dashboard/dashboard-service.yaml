@@ -9,6 +9,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   type: NodePort
+  #type: ClusterIP
   selector:
     k8s-app: kubernetes-dashboard
   ports:

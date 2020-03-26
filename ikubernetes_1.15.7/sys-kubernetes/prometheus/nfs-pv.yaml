@@ -10,7 +10,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   mountOptions:
     - hard
@@ -32,7 +32,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   mountOptions:
     - hard
@@ -40,24 +40,66 @@ spec:
     path: "/data/nfs/v2"
     server: nfs.k8s.io
 
-#---
-#
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: nfs-pv-03
-#  labels:
-#    release: nfs-pv
-#spec:
-#  capacity:
-#    storage: 8Gi
-#  volumeMode: Filesystem
-#  accessModes:
-#    - ReadWriteOnce
-#  persistentVolumeReclaimPolicy: Retain
-#  storageClassName: standard
-#  mountOptions:
-#    - hard
-#  nfs:
-#    path: "/data/v3"
-#    server: nfs.k8s.io
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-03
+  labels:
+    release: nfs-pv
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  mountOptions:
+    - hard
+  nfs:
+    path: "/data/nfs/v3"
+    server: nfs.k8s.io
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-04
+  labels:
+    release: nfs-pv
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  mountOptions:
+    - hard
+  nfs:
+    path: "/data/nfs/v4"
+    server: nfs.k8s.io
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-05
+  labels:
+    release: nfs-pv
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  mountOptions:
+    - hard
+  nfs:
+    path: "/data/nfs/v5"
+    server: nfs.k8s.io
