@@ -31,6 +31,7 @@ spec:
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
+            - --collector.textfile.directory=/host/key
           ports:
             - name: metrics
               containerPort: 9100
@@ -41,6 +42,9 @@ spec:
               readOnly:  true
             - name: sys
               mountPath: /host/sys
+              readOnly: true
+            - name: key
+              mountPath: /host/key
               readOnly: true
           resources:
             limits:
@@ -58,4 +62,7 @@ spec:
         - name: sys
           hostPath:
             path: /sys
+        - name: key
+          hostPath:
+            path: /usr/local/prometheus-2.16.0/alert
 
