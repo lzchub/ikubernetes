@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: initcontainer-pod
+  namespace: default
+spec:
+  # if restartPolicy is Never,when init container run error,init container will not restart
+  #restartPolicy: Never
+  containers:
+  - name: demoapp4
+    image: ikubernetes/demoapp:v1.0
+    imagePullPolicy: IfNotPresent
+    ports:
+    - name: http
+      containerPort: 80
+  initContainers:
+  - name: init-container
+    image: ikubernetes/admin-box:latest
+    imagePullPolicy: IfNotPresent
+    command: ['/bin/sh','-c']
+    args: ['iptables -t nat -A PREROUTING -p tcp --dport 8080 -j REDIRECT --to-port 80']
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN

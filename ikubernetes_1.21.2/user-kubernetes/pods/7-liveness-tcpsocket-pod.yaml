@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-tcpsocket-pod
+  labels:
+    check: tcpsocket
+spec:
+  containers:
+  - name: demoapp
+    image: ikubernetes/demoapp:v1.0
+    imagePullPolicy: IfNotPresent
+    ports:
+    - name: http
+      containerPort: 80
+    securityContext:
+      capabilities:
+        add: 
+        - NET_ADMIN
+    livenessProbe:
+      tcpSocket:
+        port: http
+      periodSeconds: 5
+      initialDelaySeconds: 5

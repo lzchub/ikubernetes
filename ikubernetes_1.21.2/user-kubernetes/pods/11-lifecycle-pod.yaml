@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lifecycle-pod
+  namespace: default
+  labels:
+    lifecycle: start
+spec:
+  containers:
+  - name: demoapp3
+    image: ikubernetes/demoapp:v1.0
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+    livenessProbe:
+      httpGet:
+        path: '/livez'
+        port: 80
+        scheme: HTTP
+      initialDelaySeconds: 5
+    lifecycle:
+      postStart:
+        exec:
+          command: ['/bin/sh','-c','iptables -t nat -I PREROUTING -p tcp --dport 8080 -j REDIRECT --to-ports 80']
+      preStop:
+        exec:
+          command: ["/bin/sh","-c","while killall python3;do sleep 1;done"]
+    

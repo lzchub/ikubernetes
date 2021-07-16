@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodeselector-pod
+spec:
+  containers:
+  - name: myapp
+    image: ikubernetes/myapp:v1
+
+  # if no node have this label,pod will pending 
+  nodeSelector:
+    disktype: ssd
+

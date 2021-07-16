@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: node9.k8s.io
+spec:
+  podCIDR: 10.244.20.0/24
+  podCIDRs: [10.244.20.0/24]

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: source-limit-pod
+spec:
+  containers:
+  # memory xielou, until source used over
+  - name: simmemleak
+    image: saadali/simmemleak
+    resources:
+      requests:
+        # E/P/T/G/M/K  or  Ei/Pi/Ti/Gi/Mi/Ki
+        memory: "128M"
+        # 1 core = 1000m core
+        cpu: "200m"
+      limits:
+        memory: "256M"
+        cpu: "500m"
