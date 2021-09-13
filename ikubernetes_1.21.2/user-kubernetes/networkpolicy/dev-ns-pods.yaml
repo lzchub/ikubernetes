@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+  labels:
+    env: dev
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sv-myapp
+  namespace: dev
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80 
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: dm-myapp
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: pod-myapp
+      namespace: dev
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: myapp
+        image: ikubernetes/myapp:v1

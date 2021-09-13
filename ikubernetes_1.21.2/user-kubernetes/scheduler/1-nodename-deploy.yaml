@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodename-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demoapp
+      release: stable
+  template:
+    metadata:
+      labels:
+        app: demoapp
+        release: stable
+    spec:
+      # schedulerName: demo-scheduler
+      nodeName: node1.k8s.io
+      containers:
+      - name: demoapp
+        image: ikubernetes/demoapp:v1.0
+        ports:
+        - containerPort: 80
+          name: http
+        livenessProbe:
+          httpGet:
+            path: '/livez'
+            port: 80
+          initialDelaySeconds: 5
+        readinessProbe:
+          httpGet:
+            path: '/readyz'
+            port: 80
+          initialDelaySeconds: 15
+

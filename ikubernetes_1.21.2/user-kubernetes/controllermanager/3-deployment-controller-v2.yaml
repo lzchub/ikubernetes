@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-controller-v2
+  labels:
+    controller: dm-v2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dm-v2
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      name: deployment-controller-pod-2
+      labels:
+        app: dm-v2
+    spec:
+      containers:
+      - name: myapp
+        image: ikubernetes/myapp:v1 
+

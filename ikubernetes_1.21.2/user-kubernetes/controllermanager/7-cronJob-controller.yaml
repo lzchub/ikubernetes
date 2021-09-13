@@ -1,0 +1,26 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cronjob-controller
+  labels:
+    controller: cronjob
+spec:
+  schedule: "*/10 * * * *"
+  jobTemplate:
+    metadata:
+      labels:
+        app: cronjob
+    spec:
+      parallelism: 2
+      backoffLimit: 5
+      activeDeadlineSeconds: 100
+      template:
+        metadata:
+          labels:
+            app: job
+        spec:
+          containers:
+          - name: myjob
+            image: alpine
+            command: ["/bin/sh",  "-c", "sleep 120"]
+          restartPolicy: Never

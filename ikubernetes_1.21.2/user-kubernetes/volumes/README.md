@@ -1,3 +1,15 @@
 1-emptydir-volume.yaml --> 临时存储卷，容器销毁时就消失
 2-hostpath-volume.yaml --> 与宿主机绑定的存储卷，宿主机上的目录与容器共享
 3-nfs-volume.yaml --> 使用nfs网络存储，只要可以连接存储，容器可以随意迁移
+pv_pvc->nfs->pv-nfs.yaml --> 通过nfs手动创建PV，供给给PVC使用
+pv_pvc->nfs->pvc-nfs.yaml --> pod创建时，通过PVC去绑定最符合条件的PV，用于自身持久存储数据
+storageclass->cephrbd-storageclass.yaml --> storageclass用于给PV进行分类，相同类别的PV与PVC才能进行绑定
+configmap/1-configmap-env-pod.yaml --> 通过环境变量的方式引用configmap来进行赋值
+configmap/2-configmap-envfrom-pod.yaml --> 第二种通过环境变量的方式引用configmap来进行赋值
+configmap/3-configmap-volume-pod.yaml --> 通过引用存储卷的方式，将对应配置引入，存储卷中在引入configmap
+configmap/4-configmap-volume-pod-2.yaml --> 通过引用存储卷的方式，将对应配置引入,但可以只引入我们需要的配置，存储卷中在引入configmap
+configmap/5-configmap-volume-pod-3.yaml --> 通过引用存储卷的方式，将对应配置引入,但可以只引入我们需要的配置,此为第二种方式，存储卷中在引入configmap
+secret/1-secret-env-pod.yaml --> 将配置信息通过环境变量引用传入，但是只能在初始化生效，不能动态修改
+secret/2-secret-volume-pod.yaml --> 通过引用存储卷类型来启动容器，需要提前准备configmap或者secret
+downwardAPI/1-downwardAPI-env-pod.yaml --> 通过环境变量引用当前pod的属性，为环境变量
+downwardAPI/2-downwardAPI-volume-pod.yaml --> 通过类似挂载的形式，将引用的变量挂载到对应目录下，生成对应文件，文件名为key，内容为value
